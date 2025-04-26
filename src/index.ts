@@ -1,5 +1,6 @@
 import { WebSocketServer,WebSocket } from "ws";
 import ApiResponse from "./utility/ApiResponse";
+import { random } from "./utility/random";
 
 const wss = new WebSocketServer({
     port:8080
@@ -53,7 +54,7 @@ const joinRoom =(key: string,s:WebSocket)=>{
         return;
       }
       room?.users.push(s);
-
+      
       const res = new ApiResponse(1000,{},"Room joined success",true,"join")
 
      s.send(JSON.stringify(res));
@@ -80,7 +81,7 @@ const sendMessage = (msg:string, s:WebSocket) =>{
       messageReceivers?.forEach((receiver)=>{
         const res = new ApiResponse(1000,msg,"Message sent success",true,"chat")
 
-        s.send(JSON.stringify(res));
+        receiver.send(JSON.stringify(res));
       })
 }
 
